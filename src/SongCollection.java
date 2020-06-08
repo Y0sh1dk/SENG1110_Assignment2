@@ -15,7 +15,7 @@ import java.util.*;
 
 public class SongCollection
 {
-	private final int MAX_ALBUMS = 5;
+	private final int MAX_ALBUMS = 4;
 	private Album[] albums = new Album[MAX_ALBUMS];  // Array of length MAX_ALBUMS of class type Album
 	private int album_counter = 0;
 
@@ -85,12 +85,13 @@ public class SongCollection
 		String albumList = "";
 		if (album_counter > 0) {
 			for (int i=0; i<album_counter; i++) {
-				String album = "Album" + i + ":" + albums[i].getName();
+				String album = "Album" + i + ": " + albums[i].getName();
 				System.out.println(album);
 			}
 		} else {
 			System.out.println("There are currently no albums");
 		}
+		returnToMenu(scanner);  // Make user press Enter
 	}
 
 	private void createAlbum(Scanner scanner) {
@@ -104,6 +105,7 @@ public class SongCollection
 				album_counter++;
 			}
 		}
+		returnToMenu(scanner);  // Make user press Enter
 	}
 
 	private void deleteAlbum(Scanner scanner) {
@@ -116,11 +118,17 @@ public class SongCollection
 				for (int i=0; i<album_counter; i++) {
 					if (albums[i].getName().equalsIgnoreCase(albumName)) {
 						albums[i] = null;
+						System.out.println("Album '" + albumName + "' was successfuly deleted");
 						album_counter--;
 					}
 				}
+			} else {
+				System.out.println("Sorry, no album with the name '" + albumName + "' exists");
 			}
+		} else {
+			System.out.println("There are currently no albums, please create one first");
 		}
+		returnToMenu(scanner);  // Make user press Enter
 	}
 
 	private void listSongsFromAlbum(Scanner scanner) {
@@ -140,11 +148,12 @@ public class SongCollection
 					}
 				}
 			} else {
-				System.out.println("There are currently no albums with that name");
+				System.out.println("Sorry, no album with the name '" + albumName + "' exists");
 			}
 		} else {
-			System.out.println("There are currently no albums");
+			System.out.println("There are currently no albums, please create one first");
 		}
+		returnToMenu(scanner);  // Make user press Enter
 	}
 
 	private void addSongToAlbum(Scanner scanner) {
@@ -168,8 +177,13 @@ public class SongCollection
 						}
 					}
 				}
+			} else {
+				System.out.println("Sorry, no album with the name '" + albumName + "' exists");
 			}
+		} else {
+			System.out.println("There are currently no albums, please create one first");
 		}
+		returnToMenu(scanner);  // Make user press Enter
 	}
 
 	private void deleteSongFromAlbum(Scanner scanner) {
@@ -193,7 +207,10 @@ public class SongCollection
 			} else {
 				System.out.println(songList);
 			}
+		} else {
+			System.out.println("There are currently no albums, please create one first");
 		}
+		returnToMenu(scanner);  // Make user press Enter
 	}
 
 	private void listSongsOfGenre(Scanner scanner) {
@@ -212,7 +229,10 @@ public class SongCollection
 			} else {
 				System.out.println(songsOfGenreList);
 			}
+		} else {
+			System.out.println("There are currently no albums, please create one first");
 		}
+		returnToMenu(scanner);  // Make user press Enter
 	}
 
 

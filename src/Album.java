@@ -16,7 +16,6 @@ public class Album {
     private Song[] songs = new Song[SONG_MAX];
     private int songs_counter = 0;
 
-    private boolean isFull = false;
     private int totalTime = 0;
     private final int MAX_TIME = 720; //12 minutes
 
@@ -41,6 +40,13 @@ public class Album {
         return this.name;
     }
 
+    public int getSongs_counter() {
+        return this.songs_counter;
+    }
+
+    public int getSONG_MAX() {
+        return this.SONG_MAX;
+    }
 
     public String listAllSongs(boolean details) {
         String songList = "";
@@ -59,7 +65,6 @@ public class Album {
 
     public String listSongsUnderTime(int timeMax) {
         String songList = "";
-
         for (int i=0; i<songs_counter; i++) {
             if (songs[i].getDuration() <= timeMax) {
                 songList += songs[i].getArtist() + " - " + songs[i].getName() + "\n";

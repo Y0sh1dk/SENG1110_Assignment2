@@ -21,7 +21,6 @@ public class SongCollection
 {
 
 	private final String FILE_NAME = "Collection.txt";
-
 	private final int MAX_ALBUMS = 4;
 	private Album[] albums = new Album[MAX_ALBUMS];  // Array of length MAX_ALBUMS of class type Album
 	private int album_counter = 0;
@@ -112,6 +111,7 @@ public class SongCollection
 			if (!doesAlbumExist(albumName)) { // if album with that name doesnt exist
 				albums[album_counter] = new Album(albumName);
 				album_counter++;
+				alphaSortAlbums();
 			}
 		} else {
 			System.out.println("Maximum number of albums reached! (Max 4)");
@@ -195,6 +195,7 @@ public class SongCollection
 				System.out.println("Sorry, no album with the name '" + albumName + "' exists");
 			}
 		} else {
+			scanner.nextLine(); // to throw out '/n'
 			System.out.println("There are currently no albums, please create one first");
 		}
 		returnToMenu(scanner);  // Make user press Enter
@@ -342,6 +343,20 @@ public class SongCollection
 			System.out.println("Error opening the file '" + FILE_NAME + "'");
 		}
 		return data;
+	}
+
+	private void alphaSortAlbums() {
+		for (int i = 0 ; i < albums.length - 1; i++) {
+			Album s = albums[i];
+			Album next =  albums[i+1];
+			if (next != null) {
+				if(s.getName().charAt(0) > next.getName().charAt(0)) {  // swap
+					Album tmp = albums[i];
+					albums[i] = albums[i+1];
+					albums[i+1] = tmp;
+				}
+			}
+		}
 	}
 
 

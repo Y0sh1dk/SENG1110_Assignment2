@@ -91,6 +91,7 @@ public class Album {
             if (this.totalTime + inputDuration <= this.MAX_TIME) {
                 songs[songs_counter] = new Song(inputName, inputArtist, inputDuration, inputGenre);
                 songs_counter++;
+                alphaSortSongs();
             } else {
                 return 2;
             }
@@ -135,4 +136,20 @@ public class Album {
             return songOfGenreList;
         }
     }
+
+
+    private void alphaSortSongs() {
+        for (int i = 0 ; i < songs.length - 1; i++) {
+            Song s = songs[i];
+            Song next =  songs[i+1];
+            if (next != null) {
+                if(s.getName().charAt(0) > next.getName().charAt(0)) {  // swap
+                    Song tmp = songs[i];
+                    songs[i] = songs[i+1];
+                    songs[i+1] = tmp;
+                }
+            }
+        }
+    }
+
 }

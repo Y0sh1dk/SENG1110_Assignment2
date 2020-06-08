@@ -9,12 +9,19 @@
 
 
 // TODO: Add breaks to loops?
+// TODO: Implement sorting - extra marks
 
 
+import java.io.File;
+import java.io.PrintWriter;
+import java.io.FileNotFoundException;
 import java.util.*;
 
 public class SongCollection
 {
+
+	private final String FILE_NAME = "Collection.txt";
+
 	private final int MAX_ALBUMS = 4;
 	private Album[] albums = new Album[MAX_ALBUMS];  // Array of length MAX_ALBUMS of class type Album
 	private int album_counter = 0;
@@ -80,6 +87,7 @@ public class SongCollection
 		}
 	}
 
+
 	private void listAlbums(Scanner scanner) {
 		scanner.nextLine(); // to throw out '/n'
 		String albumList = "";
@@ -94,6 +102,7 @@ public class SongCollection
 		returnToMenu(scanner);  // Make user press Enter
 	}
 
+
 	private void createAlbum(Scanner scanner) {
 		if (album_counter < MAX_ALBUMS) {
 			String albumName;
@@ -104,9 +113,12 @@ public class SongCollection
 				albums[album_counter] = new Album(albumName);
 				album_counter++;
 			}
+		} else {
+			System.out.println("Maximum number of albums reached! (Max 4)");
 		}
 		returnToMenu(scanner);  // Make user press Enter
 	}
+
 
 	private void deleteAlbum(Scanner scanner) {
 		if (album_counter > 0) {
@@ -130,6 +142,7 @@ public class SongCollection
 		}
 		returnToMenu(scanner);  // Make user press Enter
 	}
+
 
 	private void listSongsFromAlbum(Scanner scanner) {
 		if (album_counter > 0) {  // there are actually albums
@@ -155,6 +168,7 @@ public class SongCollection
 		}
 		returnToMenu(scanner);  // Make user press Enter
 	}
+
 
 	private void addSongToAlbum(Scanner scanner) {
 		if (album_counter > 0) {  // If there are albums to add too
@@ -190,6 +204,7 @@ public class SongCollection
 
 	}
 
+
 	private void listSongsUnderTime(Scanner scanner) {
 		if (album_counter > 0) {  // If there are ablums
 			int time;
@@ -212,6 +227,7 @@ public class SongCollection
 		}
 		returnToMenu(scanner);  // Make user press Enter
 	}
+
 
 	private void listSongsOfGenre(Scanner scanner) {
 		if (album_counter > 0) {
@@ -236,7 +252,6 @@ public class SongCollection
 	}
 
 
-
 	private boolean doesAlbumExist(String albumName) {
 		for (int i=0; i<album_counter; i++) {
 			if (albums[i].getName().equalsIgnoreCase(albumName)) {
@@ -245,6 +260,7 @@ public class SongCollection
 		}
 		return false;
 	}
+
 
 	private String getValidGenre(Scanner scanner) {
 		boolean valid = false;
@@ -260,6 +276,72 @@ public class SongCollection
 			}
 		}
 		return genre;
+	}
+
+	private void saveToFile(Scanner scanner) {
+
+
+		try {
+			PrintWriter outputSteam = new PrintWriter(FILE_NAME);
+		} catch (FileNotFoundException e) {
+			System.out.println("Error opening the file " + FILE_NAME);
+		}
+
+
+	}
+
+
+	private void loadFromFile(Scanner scanner) {
+		String[][] data = arrayFromFile();
+		System.out.println(Arrays.deepToString(data));
+	}
+
+
+	private String[][] arrayFromFile() {
+		Scanner inputStream;
+		String[][] data = new String[4*5][5]; //  4*5 because 4 albums of 5 songs each
+		int song_count = 0;
+		int songs_code = 0;
+		int album_count = 0;
+
+		try {
+			inputStream = new Scanner (new File(FILE_NAME));
+			while (inputStream.hasNextLine()) {
+				String line = inputStream.nextLine();
+				if (line.contains("Album")) {
+					songs_code = 0;
+					song_count = 0;
+					String[] split_line = line.split(" ", 2);
+					for (int i=0; i < 5; i++) {
+						data[album_count*5+i][0] = split_line[1];
+					}
+					album_count++;
+				} else if (line.contains("Songs")) {
+					songs_code = 1;
+				}
+
+				if (songs_code == 1) {
+					if (line.contains("Name")) {
+						String[] split_line = line.split(" ", 2);
+						data[((album_count-1)*5)+song_count][1] = split_line[1];
+					} else if (line.contains("Artist")) {
+						String[] split_line = line.split(" ", 2);
+						data[((album_count-1)*5)+song_count][2] = split_line[1];
+					} else if (line.contains("Duration")) {
+						String[] split_line = line.split(" ", 2);
+						data[((album_count-1)*5)+song_count][3] = split_line[1];
+					} else if (line.contains("Genre")) {
+						String[] split_line = line.split(" ", 2);
+						data[((album_count-1)*5)+song_count][4] = split_line[1];
+						song_count++;
+					}
+				}
+			}
+			inputStream.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("Error opening the file '" + FILE_NAME + "'");
+		}
+		return data;
 	}
 
 

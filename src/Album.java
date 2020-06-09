@@ -10,10 +10,10 @@
 
 public class Album {
 
-    private final int SONG_MAX = 5;
+    private final int MAX_SONGS = 5;
 
     private String name;
-    private Song[] songs = new Song[SONG_MAX];
+    private Song[] songs = new Song[MAX_SONGS];
     private int songs_counter = 0;
 
     private int totalTime = 0;
@@ -45,7 +45,7 @@ public class Album {
     }
 
     public int getSONG_MAX() {
-        return this.SONG_MAX;
+        return this.MAX_SONGS;
     }
 
     public String listAllSongs(boolean details) {
@@ -138,16 +138,53 @@ public class Album {
     }
 
 
+//    private void alphaSortSongs() {
+//        for (int a = 0; a < MAX_SONGS; a++) {  // Looping multiple times fixes some issues? very inefficient
+//            for (int i = 0; i < songs.length - 1; i++) {
+//                Song s = songs[i];
+//                Song next = songs[i + 1];
+//                if (next != null) {
+//                    if (s.getName().toLowerCase().charAt(0) > next.getName().toLowerCase().charAt(0)) {  // Compare first letters
+//                        // swap
+//                        Song tmp = songs[i];
+//                        songs[i] = songs[i + 1];
+//                        songs[i + 1] = tmp;
+//                    }
+//                }
+//            }
+//        }
+//    }
+
     private void alphaSortSongs() {
-        for (int i = 0 ; i < songs.length - 1; i++) {
-            Song s = songs[i];
-            Song next =  songs[i+1];
-            if (next != null) {
-                if(s.getName().toLowerCase().charAt(0) > next.getName().toLowerCase().charAt(0)) {  // Compare first letters
-                    // swap
-                    Song tmp = songs[i];
-                    songs[i] = songs[i+1];
-                    songs[i+1] = tmp;
+        for (int b = 0; b < MAX_SONGS; b++) {   // Looping multiple times fixes some issues?
+            for (int i = 0; i < songs.length - 1; i++) {
+                Song a = songs[i];
+                Song next = songs[i + 1];
+
+                if (next != null) { // If next song actually exists
+                    String a_name = a.getName().toLowerCase();
+                    String next_name = next.getName().toLowerCase();
+
+                    int min_len;
+                    if (a_name.length() > next_name.length()) {
+                        min_len = next_name.length();
+                    } else if (a_name.length() < next_name.length()) {
+                        min_len = a_name.length();
+                    } else {  // equal length
+                        min_len = next_name.length();
+                    }
+
+                    for (int j = 0; j < min_len; j++) {
+                        if (a_name.charAt(j) > next_name.charAt(j)) { // Compare letters
+                            // swap
+                            Song tmp = songs[i];
+                            songs[i] = songs[i + 1];
+                            songs[i + 1] = tmp;
+                            break;
+                        } else if (a_name.charAt(j) < next_name.charAt(j)) { // Correct alphabetically
+                            break;
+                        }
+                    }
                 }
             }
         }

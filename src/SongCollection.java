@@ -418,15 +418,35 @@ public class SongCollection
 
 
 	private void alphaSortAlbums() {
-		for (int i = 0 ; i < albums.length - 1; i++) {
-			Album s = albums[i];
-			Album next =  albums[i+1];
-			if (next != null) {
-				if(s.getName().toLowerCase().charAt(0) > next.getName().toLowerCase().charAt(0)) { // Compare first letters
-					// swap
-					Album tmp = albums[i];
-					albums[i] = albums[i+1];
-					albums[i+1] = tmp;
+		for (int b = 0; b < MAX_ALBUMS; b++) {   // Looping multiple times fixes some issues?
+			for (int i = 0; i < albums.length - 1; i++) {
+				Album a = albums[i];
+				Album next = albums[i + 1];
+
+				if (next != null) { // If next song actually exists
+					String a_name = a.getName().toLowerCase();
+					String next_name = next.getName().toLowerCase();
+
+					int min_len;
+					if (a_name.length() > next_name.length()) {
+						min_len = next_name.length();
+					} else if (a_name.length() < next_name.length()) {
+						min_len = a_name.length();
+					} else {  // equal length
+						min_len = next_name.length();
+					}
+
+					for (int j = 0; j < min_len; j++) {
+						if (a_name.charAt(j) > next_name.charAt(j)) { // Compare letters
+							// swap
+							Album tmp = albums[i];
+							albums[i] = albums[i + 1];
+							albums[i + 1] = tmp;
+							break;
+						} else if (a_name.charAt(j) < next_name.charAt(j)) { // Correct alphabetically
+							break;
+						}
+					}
 				}
 			}
 		}

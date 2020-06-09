@@ -350,7 +350,8 @@ public class SongCollection
 			Album s = albums[i];
 			Album next =  albums[i+1];
 			if (next != null) {
-				if(s.getName().charAt(0) > next.getName().charAt(0)) {  // swap
+				if(s.getName().toLowerCase().charAt(0) > next.getName().toLowerCase().charAt(0)) { // Compare first letters
+					// swap
 					Album tmp = albums[i];
 					albums[i] = albums[i+1];
 					albums[i+1] = tmp;

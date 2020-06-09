@@ -1,4 +1,4 @@
-Album Album1
+Album Album1testname
 
 Songs
 
@@ -17,7 +17,7 @@ Artist Elis Regina
 Duration 182
 Genre bossa nova
 
-Album Album2
+Album Album2testname
 
 Songs
 

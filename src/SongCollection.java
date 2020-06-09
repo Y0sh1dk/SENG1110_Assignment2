@@ -43,7 +43,8 @@ public class SongCollection
 			System.out.println("6) Delete song from album");
 			System.out.println("7) List all songs whose duration is under a certain time");
 			System.out.println("8) List all songs of a specific genre");
-			System.out.println("9) Exit program\n");
+			System.out.println("9) Load from file");
+			System.out.println("10) Exit program\n");
 			System.out.println("Please Select a Option:");
 			try {   // Try to scan for next int
 				option = scanner.nextInt();
@@ -77,6 +78,9 @@ public class SongCollection
 					listSongsOfGenre(scanner);
 					break;
 				case 9:
+					loadFromFile(scanner);
+					break;
+				case 10:
 					System.out.println("Exiting Program...");
 					System.exit(0);  // Exit program
 					break;
@@ -102,21 +106,40 @@ public class SongCollection
 	}
 
 
-	private void createAlbum(Scanner scanner) {
-		if (album_counter < MAX_ALBUMS) {
-			String albumName;
-			System.out.println("Please enter a Album name:");
-			scanner.nextLine();
-			albumName = scanner.nextLine().strip();  // Strip whitespace
-			if (!doesAlbumExist(albumName)) { // if album with that name doesnt exist
-				albums[album_counter] = new Album(albumName);
-				album_counter++;
-				alphaSortAlbums();
+	private void createAlbum(Scanner scanner, String ... album_names) {
+		boolean from_file;
+		if (album_names.length > 0) {
+			from_file = true;
+			for (int i=0; i < album_names.length; i++) {
+				String albumName = album_names[i];
+				if (!doesAlbumExist(albumName)) { // if album with that name doesnt exist
+					albums[album_counter] = new Album(albumName);
+					album_counter++;
+				}
 			}
 		} else {
-			System.out.println("Maximum number of albums reached! (Max 4)");
+			from_file = false;
+			if (album_counter < MAX_ALBUMS) {
+				String albumName;
+				System.out.println("Please enter a Album name:");
+				scanner.nextLine();
+				albumName = scanner.nextLine().strip();  // Strip whitespace
+				if (!doesAlbumExist(albumName)) { // if album with that name doesnt exist
+					albums[album_counter] = new Album(albumName);
+					album_counter++;
+
+				}
+			} else {
+				System.out.println("Maximum number of albums reached! (Max 4)");
+				scanner.nextLine();
+			}
 		}
+		if (from_file) { // If from_file == true
+			System.out.println("Albums added from file '" + FILE_NAME + "'");
+		}
+		alphaSortAlbums();
 		returnToMenu(scanner);  // Make user press Enter
+
 	}
 
 
@@ -129,7 +152,9 @@ public class SongCollection
 			if (doesAlbumExist(albumName)) {
 				for (int i=0; i<album_counter; i++) {
 					if (albums[i].getName().equalsIgnoreCase(albumName)) {
-						albums[i] = null;
+						for (int j=i; j<album_counter-1; j++) {  // Shift
+							albums[j] = albums[j + 1];
+						}
 						System.out.println("Album '" + albumName + "' was successfuly deleted");
 						album_counter--;
 					}
@@ -170,33 +195,49 @@ public class SongCollection
 	}
 
 
-	private void addSongToAlbum(Scanner scanner) {
-		if (album_counter > 0) {  // If there are albums to add too
-			String albumName;
-			System.out.println("Please enter album name you would like to add a song too:");
-			scanner.nextLine(); // to throw out '/n'
-			albumName = scanner.nextLine().strip(); // Strip whitespace
-			if (doesAlbumExist(albumName)) {  // If album does exist
-				for (int i = 0; i < album_counter; i++) {
-					if (albums[i].getName().equalsIgnoreCase(albumName)) {  // If the album
-						if (albums[i].getSongs_counter() < albums[i].getSONG_MAX() ) {
-							System.out.println("Please enter song Name:");
-							String songName = scanner.nextLine();
-							System.out.println("Please enter song Artist:");
-							String songArtist = scanner.nextLine();
-							System.out.println("Please enter song Duration (in seconds):");
-							int songDuration = scanner.nextInt();
-							String songGenre = getValidGenre(scanner);
-							albums[i].addSong(songName, songArtist, songDuration, songGenre);
-						}
+	private void addSongToAlbum(Scanner scanner, String[] ... song_details) {
+		boolean from_file;
+		if (song_details.length > 0) {
+			from_file = true;
+			for (int i = 0; i < song_details.length; i++) {
+				for (int j = 0; j < album_counter; j++) {
+					if (albums[j].getName().equalsIgnoreCase(song_details[i][0])) {
+						albums[j].addSong(song_details[i][1], song_details[i][2], Integer.parseInt(song_details[i][3]), song_details[i][4]);
 					}
 				}
-			} else {
-				System.out.println("Sorry, no album with the name '" + albumName + "' exists");
 			}
+
 		} else {
-			scanner.nextLine(); // to throw out '/n'
-			System.out.println("There are currently no albums, please create one first");
+			from_file = false;
+			if (album_counter > 0) {  // If there are albums to add too
+				String albumName;
+				System.out.println("Please enter album name you would like to add a song too:");
+				scanner.nextLine(); // to throw out '/n'
+				albumName = scanner.nextLine().strip(); // Strip whitespace
+				if (doesAlbumExist(albumName)) {  // If album does exist
+					for (int i = 0; i < album_counter; i++) {
+						if (albums[i].getName().equalsIgnoreCase(albumName)) {  // If the album
+							if (albums[i].getSongs_counter() < albums[i].getSONG_MAX() ) {
+								System.out.println("Please enter song Name:");
+								String songName = scanner.nextLine();
+								System.out.println("Please enter song Artist:");
+								String songArtist = scanner.nextLine();
+								System.out.println("Please enter song Duration (in seconds):");
+								int songDuration = scanner.nextInt();
+								String songGenre = getValidGenre(scanner);
+								albums[i].addSong(songName, songArtist, songDuration, songGenre);
+							}
+						}
+					}
+				} else {
+					System.out.println("Sorry, no album with the name '" + albumName + "' exists");
+				}
+			} else {
+				scanner.nextLine(); // to throw out '/n'
+				System.out.println("There are currently no albums, please create one first");
+			}
+		} if (from_file) { // If from_file == true
+			System.out.println("Songs added from file '" + FILE_NAME + "'");
 		}
 		returnToMenu(scanner);  // Make user press Enter
 	}
@@ -279,22 +320,29 @@ public class SongCollection
 		return genre;
 	}
 
-	private void saveToFile(Scanner scanner) {
 
-
-		try {
-			PrintWriter outputSteam = new PrintWriter(FILE_NAME);
-		} catch (FileNotFoundException e) {
-			System.out.println("Error opening the file " + FILE_NAME);
-		}
+	private void loadFromFile(Scanner scanner) {
+		String[][] data = arrayFromFile(); // Load data from .txt into 2D array
+		data = formatCollectionArray(data); // Resize array to correct size
+		loadArray(data);
 
 
 	}
 
+	private void loadArray(String[][] data) {
+//		System.out.println(Arrays.deepToString(data));
+		Scanner scanner = new Scanner(System.in);
 
-	private void loadFromFile(Scanner scanner) {
-		String[][] data = arrayFromFile();
-		System.out.println(Arrays.deepToString(data));
+		// To add albums
+		String[] album_names = new String[data.length];
+		for (int i=0; i<data.length; i++) {
+			album_names[i] = data[i][0];
+		}
+		createAlbum(scanner, album_names);
+
+		// To add songs to albums
+		addSongToAlbum(scanner, data);
+
 	}
 
 
@@ -344,6 +392,30 @@ public class SongCollection
 		}
 		return data;
 	}
+
+
+	private String[][] formatCollectionArray(String[][] input) {
+		// Find how many valid entries in array
+		int entries = 0;
+		for (int i=0; i<input.length; i++) {
+			if (input[i][1] != null) {
+				entries++;
+			}
+		}
+		String[][] new_array = new String[entries][input[0].length]; // Make new array of correct size
+		// Add valid data from input array to new array
+		int new_count = 0;
+		for (int i=0; i<input.length; i++) {
+			if (input[i][1] != null) {
+				for (int j=0; j<input[0].length; j++) {
+					new_array[new_count][j] = input[i][j];
+				}
+				new_count++;
+			}
+		}
+		return new_array;
+	}
+
 
 	private void alphaSortAlbums() {
 		for (int i = 0 ; i < albums.length - 1; i++) {

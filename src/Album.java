@@ -77,8 +77,11 @@ public class Album {
     public int deleteSong(String songName) {
         for (int i=0; i<songs_counter; i++) {
             if (this.songs[i].getName().equalsIgnoreCase(songName)) {
-                this.songs[i] = null;
+                for (int j=i; j<songs_counter-1; j++) {  // Shift
+                    songs[j] = songs[j+1];
+                }
                 songs_counter--;
+                return 1;  // Successful
             }
         }
         return 0;
@@ -123,37 +126,19 @@ public class Album {
 
 
     public String songsOfGenre(String inputgenre) {
-        String songOfGenreList = "";
+        String songOfGenreList = "\nAlbum Name: " + name + "\n";
 
         for (int i=0; i<songs_counter; i++) {
             if (songs[i].getGenre().equalsIgnoreCase(inputgenre)) {
-                songOfGenreList += "Song" + i + ":" + songs[i].getArtist() + " - " + songs[i].getName() + "\n";
+                songOfGenreList += songs[i].getArtist() + " - " + songs[i].getName() + "\n";
             }
         }
-        if (songOfGenreList.equals("")) {
-            return("None!");
-        } else {
-            return songOfGenreList;
+        if (songOfGenreList.equals("\nAlbum Name: " + name + "\n")) {
+            songOfGenreList += "None!\n";
         }
+        return songOfGenreList;
     }
 
-
-//    private void alphaSortSongs() {
-//        for (int a = 0; a < MAX_SONGS; a++) {  // Looping multiple times fixes some issues? very inefficient
-//            for (int i = 0; i < songs.length - 1; i++) {
-//                Song s = songs[i];
-//                Song next = songs[i + 1];
-//                if (next != null) {
-//                    if (s.getName().toLowerCase().charAt(0) > next.getName().toLowerCase().charAt(0)) {  // Compare first letters
-//                        // swap
-//                        Song tmp = songs[i];
-//                        songs[i] = songs[i + 1];
-//                        songs[i + 1] = tmp;
-//                    }
-//                }
-//            }
-//        }
-//    }
 
     private void alphaSortSongs() {
         for (int b = 0; b < MAX_SONGS; b++) {   // Looping multiple times fixes some issues?

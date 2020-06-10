@@ -52,11 +52,11 @@ public class Album {
         String songList = "";
         if (details == true) {
             for (int i=0; i<songs_counter; i++) {
-                songList += "Song" + i + ":"  + "\n\tName:" + songs[i].getName() + "\n\tArtist:" + songs[i].getArtist() + "\n\tDuration:" + songs[i].getDuration() + "\n\tGenre:" + songs[i].getGenre() + "\n\n";
+                songList += "Song" + i + ": "  + "\n\tName: " + songs[i].getName() + "\n\tArtist: " + songs[i].getArtist() + "\n\tDuration: " + songs[i].getDuration() + "\n\tGenre: " + songs[i].getGenre() + "\n\n";
             }
         } else { // If details == false
             for (int i=0; i<songs_counter; i++) {
-                songList += "Song" + i + ":"  + "\n\tName:" + songs[i].getName() + "\n\tArtist:" + songs[i].getArtist() + "\n\n";
+                songList += "Song" + i + ": "  + "\n\tName: " + songs[i].getName() + "\n\tArtist: " + songs[i].getArtist() + "\n\n";
             }
         }
         return songList;
@@ -95,13 +95,13 @@ public class Album {
                 songs[songs_counter] = new Song(inputName, inputArtist, inputDuration, inputGenre);
                 songs_counter++;
                 alphaSortSongs();
+                return 1;
             } else {
                 return 2;
             }
         } else {
             return 3;
         }
-        return 1; // TODO: Check
     }
 
 

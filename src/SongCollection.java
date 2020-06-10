@@ -31,8 +31,23 @@ public class SongCollection
 	 *  Prints to console to form a user interface
 	 */
 	private void run() {
+		Scanner scanner = new Scanner(System.in);  // Create new scanner object
+
+		System.out.println("############################################################################################");
+		System.out.println("SENG1110 - Assignment 2\n");
+		System.out.println("Name: Yosiah de Koeyer");
+		System.out.println("Student No: c332950");
+		System.out.println("\n NOTES:");
+		System.out.println("\t- All entered strings are striped of whitespace and converted to all lowercase");
+		System.out.println("\t- Alphabetical sorting algorithm is implemented for albums and songs");
+		System.out.println("\t- Max number of albums is 4");
+		System.out.println("\t- Max number of songs per album is 5");
+		System.out.println("\t- Albums and songs can be read in from 'Collection.txt', located in same directory");
+
+		System.out.println("############################################################################################");
+		returnToMenu(scanner, "To continue to program...");
 		while (true) {  // Run forever
-			Scanner scanner = new Scanner(System.in);  // Create new scanner object
+
 			int option = 0;
 			System.out.println("\n1) List albums");
 			System.out.println("2) Create album");
@@ -110,7 +125,7 @@ public class SongCollection
 		if (album_names.length > 0) {
 			from_file = true;
 			for (int i=0; i < album_names.length; i++) {
-				String albumName = album_names[i];
+				String albumName = album_names[i].strip().toLowerCase();
 				if (!doesAlbumExist(albumName)) { // if album with that name doesnt exist
 					albums[album_counter] = new Album(albumName);
 					album_counter++;
@@ -122,7 +137,7 @@ public class SongCollection
 				String albumName;
 				System.out.println("Please enter a Album name:");
 				scanner.nextLine();
-				albumName = scanner.nextLine().strip();  // Strip whitespace
+				albumName = scanner.nextLine().strip().toLowerCase();  // Strip whitespace
 				if (!doesAlbumExist(albumName)) { // if album with that name doesnt exist
 					albums[album_counter] = new Album(albumName);
 					album_counter++;
@@ -151,7 +166,7 @@ public class SongCollection
 			String albumName;
 			System.out.println("Please enter a Album name:");
 			scanner.nextLine();
-			albumName = scanner.nextLine().strip();  // Strip whitespace
+			albumName = scanner.nextLine().strip().toLowerCase();  // Strip whitespace
 			if (doesAlbumExist(albumName)) {
 				for (int i=0; i<album_counter; i++) {
 					if (albums[i].getName().equalsIgnoreCase(albumName)) {
@@ -177,14 +192,14 @@ public class SongCollection
 			String albumName;
 			System.out.println("Please Enter Album Name:");
 			scanner.nextLine(); // to throw out '/n'
-			albumName = scanner.nextLine().strip();  // Strip whitespace
+			albumName = scanner.nextLine().strip().toLowerCase();  // Strip whitespace
 			if (doesAlbumExist(albumName)) {  // If album does exist
 				for (int i = 0; i < album_counter; i++) {
 					if (albums[i].getName().equalsIgnoreCase(albumName)) {
 						if (albums[i].listAllSongs(true).equals("")) {   // If album.listAllSongs returns nothing
-							System.out.println("Album" + i + ": " + albums[i].getName() + "\nEmpty!");
+							System.out.println("Album: " + albums[i].getName() + "\nEmpty!");
 						} else {
-							System.out.println("Album" + i + ": " + albums[i].getName() + "\n" + albums[i].listAllSongs(true));   // Prints all songs
+							System.out.println("Album: " + albums[i].getName() + "\n" + albums[i].listAllSongs(true));   // Prints all songs
 						}
 					}
 				}
@@ -205,7 +220,11 @@ public class SongCollection
 			for (int i = 0; i < song_details.length; i++) {
 				for (int j = 0; j < album_counter; j++) {
 					if (albums[j].getName().equalsIgnoreCase(song_details[i][0])) {
-						albums[j].addSong(song_details[i][1], song_details[i][2], Integer.parseInt(song_details[i][3]), song_details[i][4]);
+						String songName = song_details[i][1].strip().toLowerCase();
+						String songArtist = song_details[i][2].strip().toLowerCase();
+						int songDuration = Integer.parseInt(song_details[i][3]);
+						String songGenre = song_details[i][4].strip().toLowerCase();
+						albums[j].addSong(songName, songArtist, songDuration, songGenre);
 					}
 				}
 			}
@@ -216,19 +235,26 @@ public class SongCollection
 				String albumName;
 				System.out.println("Please enter album name you would like to add a song too:");
 				scanner.nextLine(); // to throw out '/n'
-				albumName = scanner.nextLine().strip(); // Strip whitespace
+				albumName = scanner.nextLine().strip().toLowerCase(); // Strip whitespace
 				if (doesAlbumExist(albumName)) {  // If album does exist
 					for (int i = 0; i < album_counter; i++) {
 						if (albums[i].getName().equalsIgnoreCase(albumName)) {  // If the album
 							if (albums[i].getSongs_counter() < albums[i].getSONG_MAX() ) {
 								System.out.println("Please enter song Name:");
-								String songName = scanner.nextLine();
+								String songName = scanner.nextLine().strip().toLowerCase();
 								System.out.println("Please enter song Artist:");
-								String songArtist = scanner.nextLine();
+								String songArtist = scanner.nextLine().strip().toLowerCase();
 								System.out.println("Please enter song Duration (in seconds):");
 								int songDuration = scanner.nextInt();
 								String songGenre = getValidGenre(scanner);
-								albums[i].addSong(songName, songArtist, songDuration, songGenre);
+								int code = albums[i].addSong(songName, songArtist, songDuration, songGenre);
+								if (code == 1) {
+									System.out.println("Successfully added song");
+								} else if (code == 2) {
+									System.out.println("Error adding song, adding will exceed album time limit (720 seconds)");
+								} else if (code == 3) {
+									System.out.println("Error adding song, it already exists in album");
+								}
 							}
 						}
 					}
@@ -253,12 +279,12 @@ public class SongCollection
 		String albumName;
 		scanner.nextLine(); // to throw out '/n'
 		System.out.println("Please Enter Album Name:");
-		albumName = scanner.nextLine().strip();
+		albumName = scanner.nextLine().strip().toLowerCase();
 		if (doesAlbumExist(albumName)) { // if album with that name exists
 			for (int i = 0; i < album_counter; i++) {
 				if (albums[i].getName().equalsIgnoreCase(albumName)) {  // If the album
 					System.out.println("Please enter song Name:");
-					String songName = scanner.nextLine();
+					String songName = scanner.nextLine().strip().toLowerCase();
 					int song_code = albums[i].deleteSong(songName);
 					if (song_code == 1) {
 						System.out.println("Success!");
@@ -303,7 +329,7 @@ public class SongCollection
 			String genre;
 			System.out.println("Please Enter Genre:");
 			scanner.nextLine(); // to throw out '/n'
-			genre = scanner.nextLine().strip();
+			genre = scanner.nextLine().strip().toLowerCase();
 			System.out.println("\nAll songs of the genre '" + genre + "':");
 			String songsOfGenreList = "";
 			for (int i=0; i<album_counter; i++) {
@@ -334,7 +360,7 @@ public class SongCollection
 		scanner.nextLine(); // to throw out '/n'
 		while (!valid) {
 			System.out.println("Please enter song Genre:");
-			genre = scanner.nextLine();
+			genre = scanner.nextLine().strip().toLowerCase();
 			if (genre.equalsIgnoreCase("rock") || genre.equalsIgnoreCase("pop") || genre.equalsIgnoreCase("hip-hop") || genre.equalsIgnoreCase("bossa nova")) {
 				valid = true;
 			} else {

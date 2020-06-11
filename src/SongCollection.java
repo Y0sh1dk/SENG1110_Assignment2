@@ -117,10 +117,12 @@ public class SongCollection {
 			System.out.println("Songs with the name '" +songName + "':");
 			for (int i=0; i<album_counter; i++) {
 				String songs = albums[i].songOfName(songName);
+				String album = albums[i].getName();
+				System.out.println("In album '" + album + "':");
 				if (songs != "") {
-					String album = albums[i].getName();
-					System.out.println("In album '" + album + "':");
 					System.out.println(songs);
+				} else {
+					System.out.println("None!");
 				}
 			}
 		} else {

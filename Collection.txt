@@ -1,23 +1,4 @@
-Album Bossa Nova
-
-Songs
-
-Name Samba do aviao
-Artist Os cariocas
-Duration 154
-Genre bossa nova
-
-Name Barquinho
-Artist Roberto Menescal
-Duration 186
-Genre bossa nova
-
-Name Aguas de Marco
-Artist Elis Regina
-Duration 182
-Genre bossa nova
-
-Album Best of Queen
+Album test1
 
 Songs
 
@@ -31,4 +12,104 @@ Artist Queen
 Duration 248
 Genre rock
 
+Name Samba do aviao
+Artist Os cariocas
+Duration 1
+Genre bossa nova
 
+Name Barquinho
+Artist Roberto Menescal
+Duration 1
+Genre bossa nova
+
+Name testsong
+Artist me
+Duration 2
+Genre rock
+
+Album test2
+
+Songs
+
+Name Bohemian Rhapsody
+Artist Queen
+Duration 1
+Genre rock
+
+Name Under Pressure
+Artist Queen
+Duration 248
+Genre rock
+
+Name Samba do aviao
+Artist Os cariocas
+Duration 1
+Genre bossa nova
+
+Name Barquinho
+Artist Roberto Menescal
+Duration 186
+Genre bossa nova
+
+Name testsong
+Artist me
+Duration 2
+Genre rock
+
+Album test3
+
+Songs
+
+Name Bohemian Rhapsody
+Artist Queen
+Duration 1
+Genre rock
+
+Name Under Pressure
+Artist Queen
+Duration 1
+Genre rock
+
+Name Samba do aviao
+Artist Os cariocas
+Duration 154
+Genre bossa nova
+
+Name Barquinho
+Artist Roberto Menescal
+Duration 186
+Genre bossa nova
+
+Name testsong
+Artist me
+Duration 2
+Genre rock
+
+Album test4
+
+Songs
+
+Name Bohemian Rhapsody
+Artist Queen
+Duration 1
+Genre rock
+
+Name Under Pressure
+Artist Queen
+Duration 248
+Genre rock
+
+Name Samba do aviao
+Artist Os cariocas
+Duration 154
+Genre bossa nova
+
+Name Barquinho
+Artist Roberto Menescal
+Duration 1
+Genre bossa nova
+
+Name testsong
+Artist me
+Duration 2
+Genre rock

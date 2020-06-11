@@ -12,7 +12,7 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 public class SongCollection {
-	
+
 	private final String FILE_NAME = "Collection.txt";
 	private final int MAX_ALBUMS = 4;
 	private Album[] albums = new Album[MAX_ALBUMS];  // Array of length MAX_ALBUMS of class type Album
@@ -287,6 +287,8 @@ public class SongCollection {
 								} else if (code == 3) {
 									System.out.println("Error: song it already exists in album");
 								}
+							} else {
+								System.out.println("Error: Album is already full! (Max 5 songs)");
 							}
 						}
 					}

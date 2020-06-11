@@ -31,16 +31,32 @@ public class SongCollection
 		System.out.println("############################################################################################");
 		System.out.println("SENG1110 - Assignment 2\n");
 		System.out.println("Name: Yosiah de Koeyer");
-		System.out.println("Student No: c332950");
+		System.out.println("Student No: c3329520");
 		System.out.println("\n NOTES:");
 		System.out.println("\t- All entered strings are striped of whitespace and converted to all lowercase");
 		System.out.println("\t- Alphabetical sorting algorithm is implemented for albums and songs");
 		System.out.println("\t- Max number of albums is 4");
 		System.out.println("\t- Max number of songs per album is 5");
 		System.out.println("\t- Albums and songs can be read in from 'Collection.txt', located in same directory");
+		System.out.println("\t- PROGRAM PRESUMES 'Collection.txt' IS VALID AND DOESNT EXCEED SONG OR ALBUM LIMITS");
 
 		System.out.println("############################################################################################");
 		returnToMenu(scanner, "To continue to program...");
+
+		int option1 = -1;
+		while (option1 == -1) {
+			scanner.nextLine(); // to throw out '/n'
+			System.out.println("Would you like to load a collection from '" + FILE_NAME + "'?    Yes(1)/No(0)");
+			try {   // Try to scan for next int
+				option1 = scanner.nextInt();
+				if (option1 == 1) {
+					loadFromFile(scanner);
+				}
+
+			} catch (Exception InputMismatchException) {   // catch exception if not int so doesnt crash
+				System.out.println("Did not Provide a integer");
+			}
+		}
 		while (true) {  // Run forever
 
 			int option = 0;
@@ -52,8 +68,7 @@ public class SongCollection
 			System.out.println("6) Delete song from album");
 			System.out.println("7) List all songs whose duration is under a certain time");
 			System.out.println("8) List all songs of a specific genre");
-			System.out.println("9) Load from file");
-			System.out.println("10) Exit program\n");
+			System.out.println("9) Exit program\n");
 			System.out.println("Please Select a Option:");
 			try {   // Try to scan for next int
 				option = scanner.nextInt();
@@ -87,9 +102,6 @@ public class SongCollection
 					listSongsOfGenre(scanner);
 					break;
 				case 9:
-					loadFromFile(scanner);
-					break;
-				case 10:
 					System.out.println("Exiting Program...");
 					System.exit(0);  // Exit program
 					break;

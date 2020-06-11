@@ -4,12 +4,7 @@
  *
  * @author Yosiah de Koeyer
  * @Student_Number c3329520
- * @Last_Edit 08/05/2020
  */
-
-
-// TODO: Add breaks to loops?
-// TODO: Implement sorting - extra marks
 
 
 import java.io.File;
@@ -114,7 +109,7 @@ public class SongCollection
 				System.out.println(album);
 			}
 		} else {
-			System.out.println("There are currently no albums");
+			System.out.println("Error: There are currently no albums");
 		}
 		returnToMenu(scanner);  // Make user press Enter
 	}
@@ -125,10 +120,12 @@ public class SongCollection
 		if (album_names.length > 0) {
 			from_file = true;
 			for (int i=0; i < album_names.length; i++) {
-				String albumName = album_names[i].strip().toLowerCase();
-				if (!doesAlbumExist(albumName)) { // if album with that name doesnt exist
-					albums[album_counter] = new Album(albumName);
-					album_counter++;
+				if (album_names[i] != null) { // if album is valid
+					String albumName = album_names[i].strip().toLowerCase();
+					if (!doesAlbumExist(albumName)) { // if album with that name doesnt exist
+						albums[album_counter] = new Album(albumName);
+						album_counter++;
+					}
 				}
 			}
 		} else {
@@ -142,9 +139,11 @@ public class SongCollection
 					albums[album_counter] = new Album(albumName);
 					album_counter++;
 
+				} else {
+					System.out.println("Error: A album with the name '" + albumName + "' already exists");
 				}
 			} else {
-				System.out.println("Maximum number of albums reached! (Max 4)");
+				System.out.println("Error: Maximum number of albums reached! (Max 4)");
 				scanner.nextLine();
 			}
 		}
@@ -178,10 +177,10 @@ public class SongCollection
 					}
 				}
 			} else {
-				System.out.println("Sorry, no album with the name '" + albumName + "' exists");
+				System.out.println("Error: No album with the name '" + albumName + "' exists");
 			}
 		} else {
-			System.out.println("There are currently no albums, please create one first");
+			System.out.println("Error: There are currently no albums, please create one first");
 		}
 		returnToMenu(scanner);  // Make user press Enter
 	}
@@ -204,10 +203,10 @@ public class SongCollection
 					}
 				}
 			} else {
-				System.out.println("Sorry, no album with the name '" + albumName + "' exists");
+				System.out.println("Error: No album with the name '" + albumName + "' exists");
 			}
 		} else {
-			System.out.println("There are currently no albums, please create one first");
+			System.out.println("Error: There are currently no albums, please create one first");
 		}
 		returnToMenu(scanner);  // Make user press Enter
 	}
@@ -220,11 +219,13 @@ public class SongCollection
 			for (int i = 0; i < song_details.length; i++) {
 				for (int j = 0; j < album_counter; j++) {
 					if (albums[j].getName().equalsIgnoreCase(song_details[i][0])) {
-						String songName = song_details[i][1].strip().toLowerCase();
-						String songArtist = song_details[i][2].strip().toLowerCase();
-						int songDuration = Integer.parseInt(song_details[i][3]);
-						String songGenre = song_details[i][4].strip().toLowerCase();
-						albums[j].addSong(songName, songArtist, songDuration, songGenre);
+						if (song_details[i][1] != null) { // If there is a song at that index
+							String songName = song_details[i][1].strip().toLowerCase();
+							String songArtist = song_details[i][2].strip().toLowerCase();
+							int songDuration = Integer.parseInt(song_details[i][3]);
+							String songGenre = song_details[i][4].strip().toLowerCase();
+							albums[j].addSong(songName, songArtist, songDuration, songGenre);
+						}
 					}
 				}
 			}
@@ -251,19 +252,19 @@ public class SongCollection
 								if (code == 1) {
 									System.out.println("Successfully added song");
 								} else if (code == 2) {
-									System.out.println("Error adding song, adding will exceed album time limit (720 seconds)");
+									System.out.println("Error: adding will exceed album time limit (720 seconds)");
 								} else if (code == 3) {
-									System.out.println("Error adding song, it already exists in album");
+									System.out.println("Error: song it already exists in album");
 								}
 							}
 						}
 					}
 				} else {
-					System.out.println("Sorry, no album with the name '" + albumName + "' exists");
+					System.out.println("Error: No album with the name '" + albumName + "' exists");
 				}
 			} else {
 				scanner.nextLine(); // to throw out '/n'
-				System.out.println("There are currently no albums, please create one first");
+				System.out.println("Error: There are currently no albums, please create one first");
 			}
 		} if (from_file) { // If from_file == true
 			System.out.println("Songs added from file '" + FILE_NAME + "'");
@@ -289,7 +290,7 @@ public class SongCollection
 					if (song_code == 1) {
 						System.out.println("Success!");
 					} else {
-						System.out.println("Song with that names doesnt exist!");
+						System.out.println("Error: Song with that names doesnt exist!");
 					}
 				}
 			}
@@ -318,7 +319,7 @@ public class SongCollection
 				System.out.println(songList);
 			}
 		} else {
-			System.out.println("There are currently no albums, please create one first");
+			System.out.println("Error: There are currently no albums, please create one first");
 		}
 		returnToMenu(scanner);  // Make user press Enter
 	}
@@ -337,7 +338,7 @@ public class SongCollection
 			}
 			System.out.println(songsOfGenreList);
 		} else {
-			System.out.println("There are currently no albums, please create one first");
+			System.out.println("Error: There are currently no albums, please create one first");
 			scanner.nextLine(); // to throw out '/n'
 		}
 		returnToMenu(scanner);  // Make user press Enter
@@ -364,7 +365,7 @@ public class SongCollection
 			if (genre.equalsIgnoreCase("rock") || genre.equalsIgnoreCase("pop") || genre.equalsIgnoreCase("hip-hop") || genre.equalsIgnoreCase("bossa nova")) {
 				valid = true;
 			} else {
-				System.out.println("Invalid Genre");
+				System.out.println("Error: Invalid Genre");
 			}
 		}
 		return genre;
@@ -374,17 +375,13 @@ public class SongCollection
 	private void loadFromFile(Scanner scanner) {
 		try {
 			String[][] data = arrayFromFile();  // Load data from .txt into 2D array
-			data = formatCollectionArray(data); // Resize array to correct size
+//			data = formatCollectionArray(data); // Resize array to correct size
 			loadArray(scanner, data);
 		} catch (FileNotFoundException e) {
 			System.out.println("Error: cannot open file '" + FILE_NAME + "'");
 			scanner.nextLine(); // to throw out '/n'
 			returnToMenu(scanner);
 		}
-
-
-
-
 	}
 
 	private void loadArray( Scanner scanner, String[][] data) {
@@ -472,7 +469,7 @@ public class SongCollection
 
 
 	private void alphaSortAlbums() {
-		for (int b = 0; b < MAX_ALBUMS; b++) {   // Looping multiple times fixes some issues?
+		for (int b = 0; b < MAX_ALBUMS; b++) {   // Looping multiple times fixes some issues?, inefficient
 			for (int i = 0; i < albums.length - 1; i++) {
 				Album a = albums[i];
 				Album next = albums[i + 1];

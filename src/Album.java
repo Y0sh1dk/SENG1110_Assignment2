@@ -5,7 +5,6 @@
  *
  * @author Yosiah de Koeyer
  * @Student_Number c3329520
- * @Last_Edit 08/05/2020
  */
 
 public class Album {
@@ -141,7 +140,7 @@ public class Album {
 
 
     private void alphaSortSongs() {
-        for (int b = 0; b < MAX_SONGS; b++) {   // Looping multiple times fixes some issues?
+        for (int b = 0; b < MAX_SONGS; b++) {   // Looping multiple times fixes some issues?, inefficient
             for (int i = 0; i < songs.length - 1; i++) {
                 Song a = songs[i];
                 Song next = songs[i + 1];

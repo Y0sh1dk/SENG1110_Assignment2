@@ -4,7 +4,6 @@
  *
  * @author Yosiah de Koeyer
  * @Student_Number c3329520
- * @Last_Edit 08/05/2020
  */
 
 public class Song {

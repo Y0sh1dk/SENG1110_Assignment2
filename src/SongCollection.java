@@ -11,20 +11,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 
-public class SongCollection
-{
-
+public class SongCollection {
+	
 	private final String FILE_NAME = "Collection.txt";
 	private final int MAX_ALBUMS = 4;
 	private Album[] albums = new Album[MAX_ALBUMS];  // Array of length MAX_ALBUMS of class type Album
 	private int album_counter = 0;
 
-	/**
-	 * Method: run()
-	 *
-	 *  Main program loop, doesnt end until user specifies or if an exception is thrown.
-	 *  Prints to console to form a user interface
-	 */
 	private void run() {
 		Scanner scanner = new Scanner(System.in);  // Create new scanner object
 
@@ -155,7 +148,7 @@ public class SongCollection
 
 	private void createAlbum(Scanner scanner, String ... album_names) {
 		boolean from_file;
-		if (album_names.length > 0) {
+		if (album_names.length > 0) { // If a String[] array is passed to the method
 			from_file = true;
 			for (int i=0; i < album_names.length; i++) {
 				if (album_names[i] != null) { // if album is valid
@@ -168,7 +161,7 @@ public class SongCollection
 			}
 		} else {
 			from_file = false;
-			if (album_counter < MAX_ALBUMS) {
+			if (album_counter < MAX_ALBUMS) {  // If there are albums
 				String albumName;
 				System.out.println("Please enter a Album name:");
 				scanner.nextLine();
@@ -190,7 +183,7 @@ public class SongCollection
 			alphaSortAlbums();
 			returnToMenu(scanner, "to continue");  // Make user press Enter
 		} else {
-			alphaSortAlbums();
+			alphaSortAlbums(); // Alphabetically sort albums
 			returnToMenu(scanner);  // Make user press Enter
 		}
 
@@ -252,16 +245,16 @@ public class SongCollection
 
 	private void addSongToAlbum(Scanner scanner, String[] ... song_details) {
 		boolean from_file;
-		if (song_details.length > 0) {
+		if (song_details.length > 0) {  // If a 2D String[][] array is passed to the method
 			from_file = true;
 			for (int i = 0; i < song_details.length; i++) {
 				for (int j = 0; j < album_counter; j++) {
-					if (albums[j].getName().equalsIgnoreCase(song_details[i][0])) {
+					if (albums[j].getName().equalsIgnoreCase(song_details[i][0])) { // Find album to add song too
 						if (song_details[i][1] != null) { // If there is a song at that index
-							String songName = song_details[i][1].strip().toLowerCase();
-							String songArtist = song_details[i][2].strip().toLowerCase();
-							int songDuration = Integer.parseInt(song_details[i][3]);
-							String songGenre = song_details[i][4].strip().toLowerCase();
+							String songName = song_details[i][1].strip().toLowerCase(); // Extract name
+							String songArtist = song_details[i][2].strip().toLowerCase();  // Extract artist
+							int songDuration = Integer.parseInt(song_details[i][3]); // Extract duration and cast to int
+							String songGenre = song_details[i][4].strip().toLowerCase();  // Extract genre
 							albums[j].addSong(songName, songArtist, songDuration, songGenre);
 						}
 					}
@@ -413,8 +406,7 @@ public class SongCollection
 	private void loadFromFile(Scanner scanner) {
 		try {
 			String[][] data = arrayFromFile();  // Load data from .txt into 2D array
-//			data = formatCollectionArray(data); // Resize array to correct size
-			loadArray(scanner, data);
+			loadArray(scanner, data); // Add albums and songs from array
 		} catch (FileNotFoundException e) {
 			System.out.println("Error: cannot open file '" + FILE_NAME + "'");
 			scanner.nextLine(); // to throw out '/n'
@@ -424,7 +416,6 @@ public class SongCollection
 
 	private void loadArray( Scanner scanner, String[][] data) {
 //		System.out.println(Arrays.deepToString(data));
-
 		// create array of album names
 		String[] album_names = new String[data.length];
 		for (int i=0; i<data.length; i++) {
@@ -441,81 +432,59 @@ public class SongCollection
 
 	private String[][] arrayFromFile() throws FileNotFoundException {
 		Scanner inputStream;
-		String[][] data = new String[4*5][5]; //  4*5 because 4 albums of 5 songs each
+		String[][] data = new String[4*5][5]; //  4*5 because 4 albums of 5 songs each, maximum possible
 		int song_count = 0;
 		int songs_code = 0;
 		int album_count = 0;
 
 		inputStream = new Scanner (new File(FILE_NAME));
-		while (inputStream.hasNextLine()) {
+		while (inputStream.hasNextLine()) {  // While until end of file
 			String line = inputStream.nextLine();
 			if (line.contains("Album")) {
 				songs_code = 0;
 				song_count = 0;
-				String[] split_line = line.split(" ", 2);
+				String[] split_line = line.split(" ", 2); // Split line into array
 				for (int i=0; i < 5; i++) {
-					data[album_count*5+i][0] = split_line[1];
+					data[album_count*5+i][0] = split_line[1]; // Fill array at the particular album start point with album name from file
 				}
 				album_count++;
-			} else if (line.contains("Songs")) {
+			} else if (line.contains("Songs")) { // If we hit the songs in .txt
 				songs_code = 1;
 			}
 
-			if (songs_code == 1) {
+			if (songs_code == 1) {  // If we hit the songs in .txt
 				if (line.contains("Name")) {
-					String[] split_line = line.split(" ", 2);
-					data[((album_count-1)*5)+song_count][1] = split_line[1];
+					String[] split_line = line.split(" ", 2); // Split line into array
+					data[((album_count-1)*5)+song_count][1] = split_line[1]; // Add name to correct album
 				} else if (line.contains("Artist")) {
-					String[] split_line = line.split(" ", 2);
-					data[((album_count-1)*5)+song_count][2] = split_line[1];
+					String[] split_line = line.split(" ", 2); // Split line into array
+					data[((album_count-1)*5)+song_count][2] = split_line[1]; // Add artist to correct album
 				} else if (line.contains("Duration")) {
-					String[] split_line = line.split(" ", 2);
-					data[((album_count-1)*5)+song_count][3] = split_line[1];
+					String[] split_line = line.split(" ", 2); // Split line into array
+					data[((album_count-1)*5)+song_count][3] = split_line[1]; // Add duration to correct album
 				} else if (line.contains("Genre")) {
-					String[] split_line = line.split(" ", 2);
-					data[((album_count-1)*5)+song_count][4] = split_line[1];
+					String[] split_line = line.split(" ", 2); // Split line into array
+					data[((album_count-1)*5)+song_count][4] = split_line[1]; // Add genre to correct album
 					song_count++;
 					}
 				}
 			}
 			inputStream.close();
-		return data;
-	}
-
-
-	private String[][] formatCollectionArray(String[][] input) {
-		// Find how many valid entries in array
-		int entries = 0;
-		for (int i=0; i<input.length; i++) {
-			if (input[i][1] != null) {
-				entries++;
-			}
-		}
-		String[][] new_array = new String[entries][input[0].length]; // Make new array of correct size
-		// Add valid data from input array to new array
-		int new_count = 0;
-		for (int i=0; i<input.length; i++) {
-			if (input[i][1] != null) {
-				for (int j=0; j<input[0].length; j++) {
-					new_array[new_count][j] = input[i][j];
-				}
-				new_count++;
-			}
-		}
-		return new_array;
+		return data; // Return 2d array with albums and songs
 	}
 
 
 	private void alphaSortAlbums() {
 		for (int b = 0; b < MAX_ALBUMS; b++) {   // Looping multiple times fixes some issues?, inefficient
-			for (int i = 0; i < albums.length - 1; i++) {
+			for (int i = 0; i < albums.length - 1; i++) { // Also inefficient if albums[] array not full
 				Album a = albums[i];
 				Album next = albums[i + 1];
 
-				if (next != null) { // If next song actually exists
+				if (next != null) { // If next Album actually exists
 					String a_name = a.getName().toLowerCase();
 					String next_name = next.getName().toLowerCase();
 
+					// Find smallest name so dont get null pointer later
 					int min_len;
 					if (a_name.length() > next_name.length()) {
 						min_len = next_name.length();

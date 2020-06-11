@@ -35,31 +35,36 @@ public class Album {
         this.name = inputName;
     }
 
+
     public String getName() {
         return this.name;
     }
+
 
     public int getSongs_counter() {
         return this.songs_counter;
     }
 
+
     public int getSONG_MAX() {
         return this.MAX_SONGS;
     }
+
 
     public String listAllSongs(boolean details) {
         String songList = "";
         if (details == true) {
             for (int i=0; i<songs_counter; i++) {
-                songList += "Song" + i + ": "  + "\n\tName: " + songs[i].getName() + "\n\tArtist: " + songs[i].getArtist() + "\n\tDuration: " + songs[i].getDuration() + "\n\tGenre: " + songs[i].getGenre() + "\n\n";
+                songList += "Song: "  + "\n\tName: " + songs[i].getName() + "\n\tArtist: " + songs[i].getArtist() + "\n\tDuration: " + songs[i].getDuration() + "\n\tGenre: " + songs[i].getGenre() + "\n\n";
             }
         } else { // If details == false
             for (int i=0; i<songs_counter; i++) {
-                songList += "Song" + i + ": "  + "\n\tName: " + songs[i].getName() + "\n\tArtist: " + songs[i].getArtist() + "\n\n";
+                songList += "Song: "  + "\n\tName: " + songs[i].getName() + "\n\tArtist: " + songs[i].getArtist() + "\n\n";
             }
         }
         return songList;
     }
+
 
     public String songOfName(String songName) {
         String songList = "";
@@ -152,7 +157,7 @@ public class Album {
 
     private void alphaSortSongs() {
         for (int b = 0; b < MAX_SONGS; b++) {   // Looping multiple times fixes some issues?, inefficient
-            for (int i = 0; i < songs.length - 1; i++) {
+            for (int i = 0; i < songs.length - 1; i++) {  // Also inefficient if songs[] array not full
                 Song a = songs[i];
                 Song next = songs[i + 1];
 
@@ -160,6 +165,7 @@ public class Album {
                     String a_name = a.getName().toLowerCase();
                     String next_name = next.getName().toLowerCase();
 
+                    // Find smallest name so dont get null pointer later
                     int min_len;
                     if (a_name.length() > next_name.length()) {
                         min_len = next_name.length();

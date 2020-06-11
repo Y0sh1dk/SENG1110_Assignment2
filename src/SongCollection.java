@@ -38,7 +38,7 @@ public class SongCollection
 		System.out.println("\t- Max number of albums is 4");
 		System.out.println("\t- Max number of songs per album is 5");
 		System.out.println("\t- Albums and songs can be read in from 'Collection.txt', located in same directory");
-		System.out.println("\t- PROGRAM PRESUMES 'Collection.txt' IS VALID AND DOESNT EXCEED SONG OR ALBUM LIMITS");
+		System.out.println("\t- PROGRAM PRESUMES 'Collection.txt' IS VALID AND DOESNT EXCEED ANY SONG OR ALBUM LIMITS");
 
 		System.out.println("############################################################################################");
 		returnToMenu(scanner, "To continue to program...");
@@ -66,9 +66,10 @@ public class SongCollection
 			System.out.println("4) List songs from album");
 			System.out.println("5) Add song to album");
 			System.out.println("6) Delete song from album");
-			System.out.println("7) List all songs whose duration is under a certain time");
-			System.out.println("8) List all songs of a specific genre");
-			System.out.println("9) Exit program\n");
+			System.out.println("7) List all songs of specific name");
+			System.out.println("8) List all songs whose duration is under a certain time");
+			System.out.println("9) List all songs of a specific genre");
+			System.out.println("10) Exit program\n");
 			System.out.println("Please Select a Option:");
 			try {   // Try to scan for next int
 				option = scanner.nextInt();
@@ -96,12 +97,15 @@ public class SongCollection
 					deleteSongFromAlbum(scanner);
 					break;
 				case 7:
-					listSongsUnderTime(scanner);
+					listSongsOfName(scanner);
 					break;
 				case 8:
-					listSongsOfGenre(scanner);
+					listSongsUnderTime(scanner);
 					break;
 				case 9:
+					listSongsOfGenre(scanner);
+					break;
+				case 10:
 					System.out.println("Exiting Program...");
 					System.exit(0);  // Exit program
 					break;
@@ -111,13 +115,35 @@ public class SongCollection
 		}
 	}
 
+	private void listSongsOfName(Scanner scanner) {
+		if (album_counter > 0) {
+			String songName;
+			System.out.println("Please enter a Song name:");
+			scanner.nextLine();
+			songName = scanner.nextLine().strip().toLowerCase();  // Strip whitespace
+			System.out.println("Songs with the name '" +songName + "':");
+			for (int i=0; i<album_counter; i++) {
+				String songs = albums[i].songOfName(songName);
+				if (songs != "") {
+					String album = albums[i].getName();
+					System.out.println("In album '" + album + "':");
+					System.out.println(songs);
+				}
+			}
+		} else {
+			System.out.println("Error: There are currently no albums");
+		}
+		returnToMenu(scanner);  // Make user press Enter
+	}
+
 
 	private void listAlbums(Scanner scanner) {
 		scanner.nextLine(); // to throw out '/n'
 		String albumList = "";
+		System.out.println("\nAlbums:");
 		if (album_counter > 0) {
 			for (int i=0; i<album_counter; i++) {
-				String album = "Album" + i + ": " + albums[i].getName();
+				String album = albums[i].getName();
 				System.out.println(album);
 			}
 		} else {
@@ -532,4 +558,3 @@ public class SongCollection
 		sc.run();  // run SongCollection.run() method
 	}
 }
-

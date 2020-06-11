@@ -61,6 +61,17 @@ public class Album {
         return songList;
     }
 
+    public String songOfName(String songName) {
+        String songList = "";
+        for (int i=0; i<songs_counter; i++) {
+            if (songs[i].getName().equalsIgnoreCase(songName)) {
+                songList += "\tName: " + songs[i].getName() + "\n\tArtist: " + songs[i].getArtist() + "\n\tDuration: " + songs[i].getDuration() + "\n\tGenre: " + songs[i].getGenre() + "\n\n";
+            }
+        }
+
+        return songList;
+    }
+
 
     public String listSongsUnderTime(int timeMax) {
         String songList = "";
